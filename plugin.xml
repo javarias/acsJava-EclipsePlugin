@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+            class="edu.nrao.acs.IntlistContainerInitializer"
+            id="acs.INTLIST_CONTAINER">
+      </classpathContainerInitializer>
+   </extension>
+   <extension
+         point="org.eclipse.jdt.ui.classpathContainerPage">
+      <classpathContainerPage
+            id="acs.INTLIST_CONTAINER"
+            name="ACS INTROOT Container">
+      </classpathContainerPage>
+   </extension>
+
+</plugin>
