@@ -16,8 +16,8 @@ public class IntlistContainerPage extends WizardPage implements
 	private final static String DEFAULT_EXTS = "jar,zip";
 	private IJavaProject proj;
 	
-	protected IntlistContainerPage(String pageName) {
-		super(pageName);
+	public IntlistContainerPage() {
+		super("ACS INTLIST Wizard","ACS INTLIST", null );
 		// TODO Auto-generated constructor stub
 	}
 

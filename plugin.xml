@@ -11,8 +11,9 @@
    <extension
          point="org.eclipse.jdt.ui.classpathContainerPage">
       <classpathContainerPage
+            class="edu.nrao.acs.IntlistContainerPage"
             id="acs.INTLIST_CONTAINER"
-            name="ACS INTROOT Container">
+            name="ACS INTROOT Directory">
       </classpathContainerPage>
    </extension>
 
