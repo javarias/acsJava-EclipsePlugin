@@ -4,25 +4,34 @@
    <extension
          point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
-            class="edu.nrao.acs.IntlistContainerInitializer"
-            id="acs.INTLIST_CONTAINER">
+            class="edu.nrao.acs.AcsrootContainerInitializer"
+            id="acs.ACSROOT_CONTAINER">
       </classpathContainerInitializer>
       <classpathContainerInitializer
             class="edu.nrao.acs.IntrootContainerInitializer"
             id="acs.INTROOT_CONTAINER">
       </classpathContainerInitializer>
+      <classpathContainerInitializer
+            class="edu.nrao.acs.IntlistContainerInitializer"
+            id="acs.INTLIST_CONTAINER">
+      </classpathContainerInitializer>
    </extension>
    <extension
          point="org.eclipse.jdt.ui.classpathContainerPage">
       <classpathContainerPage
-            class="edu.nrao.acs.IntlistContainerPage"
-            id="acs.INTLIST_CONTAINER"
-            name="ACS INTLIST Directory">
+            class="edu.nrao.acs.AcsrootContainerPage"
+            id="acs.ACSROOT_CONTAINER"
+            name="ACS Installation Directory">
       </classpathContainerPage>
       <classpathContainerPage
             class="edu.nrao.acs.IntrootContainerPage"
             id="acs.INTROOT_CONTAINER"
             name="ACS INTROOT Directory">
+      </classpathContainerPage>
+      <classpathContainerPage
+            class="edu.nrao.acs.IntlistContainerPage"
+            id="acs.INTLIST_CONTAINER"
+            name="ACS INTLIST Directory">
       </classpathContainerPage>
    </extension>
 
