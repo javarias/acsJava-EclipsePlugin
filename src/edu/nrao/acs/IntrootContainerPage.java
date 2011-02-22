@@ -161,15 +161,16 @@ public class IntrootContainerPage extends WizardPage implements
      */
     private String getInitDir() {
         String projDir = proj.getProject().getLocation().toString();
+        String introotDir =  System.getenv("INTROOT");
         if(_initPath != null && _initPath.segmentCount() > 1 ) {
         	String dirPath = "";
         	for (int i = 1; i < _initPath.segmentCount() - 1; i++)
         		dirPath += IPath.SEPARATOR + _initPath.segment(i);
             return dirPath;
         }
-        // else
-        return projDir;
-        
+        if (introotDir == null)
+        	return projDir;
+        return introotDir;
     }
     
     /**

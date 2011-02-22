@@ -161,15 +161,17 @@ public class IntlistContainerPage extends WizardPage implements
      */
     private String getInitDir() {
         String projDir = proj.getProject().getLocation().toString();
+        String intlistRootDir = System.getenv("INTLIST");
         if(_initPath != null && _initPath.segmentCount() > 1 ) {
         	String dirPath = "";
         	for (int i = 1; i < _initPath.segmentCount() - 1; i++)
         		dirPath += IPath.SEPARATOR + _initPath.segment(i);
             return dirPath;
         }
-        // else
-        return projDir;
-        
+        if (intlistRootDir == null)
+        	return projDir;
+        intlistRootDir = intlistRootDir.split(":")[0];
+        return intlistRootDir.substring(0, intlistRootDir.lastIndexOf(IPath.SEPARATOR));
     }
     
     /**
