@@ -31,7 +31,7 @@ public class IntrootContainerPage extends WizardPage implements
     private Combo _dirCombo;
     private Button _dirBrowseButton;
 	
-	protected IntrootContainerPage(String pageName) {
+	public IntrootContainerPage() {
 		super("ACS INTROOT Wizard","ACS INTROOT", null );
 		setDescription("INTROOT");
 		setPageComplete(true);
