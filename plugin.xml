@@ -7,12 +7,21 @@
             class="edu.nrao.acs.IntlistContainerInitializer"
             id="acs.INTLIST_CONTAINER">
       </classpathContainerInitializer>
+      <classpathContainerInitializer
+            class="edu.nrao.acs.IntrootContainerInitializer"
+            id="acs.INTROOT_CONTAINER">
+      </classpathContainerInitializer>
    </extension>
    <extension
          point="org.eclipse.jdt.ui.classpathContainerPage">
       <classpathContainerPage
             class="edu.nrao.acs.IntlistContainerPage"
             id="acs.INTLIST_CONTAINER"
+            name="ACS INTLIST Directory">
+      </classpathContainerPage>
+      <classpathContainerPage
+            class="edu.nrao.acs.IntrootContainerPage"
+            id="acs.INTROOT_CONTAINER"
             name="ACS INTROOT Directory">
       </classpathContainerPage>
    </extension>
