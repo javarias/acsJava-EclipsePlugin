@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ACS Java Plugin
-Bundle-SymbolicName: edu.nrao.acs.java.plugin;singleton:=true
+Bundle-SymbolicName: ACSJavaEclipsePlugin;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Vendor: ALMA CIPT
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.6.0",
