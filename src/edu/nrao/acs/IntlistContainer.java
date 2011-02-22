@@ -64,10 +64,10 @@ public class IntlistContainer implements IClasspathContainer {
 //			dir = new File(rootProj, path.toString());
 //		}
 		
-		dir = new File("/" + path.toString());
+		dir = new File(IPath.SEPARATOR + path.toString());
 		
-		orderFile = new File(dir.getAbsolutePath() + "/intlist.order");
-		desc = "INTLIST /" + path + " Libraries";
+		orderFile = new File(dir, "intlist.order");
+		desc = "INTLIST " + dir.getAbsolutePath() + " Libraries";
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class IntlistContainer implements IClasspathContainer {
 			String strLine;
 			while ((strLine = br.readLine()) != null) {
 				//Check for directories declared in intlist.order 
-				File intlistDir = new File(dir.getAbsolutePath() + "/"
-						+ strLine + "/" + "lib");
+				File intlistDir = new File(dir.getAbsolutePath() + IPath.SEPARATOR
+						+ strLine + IPath.SEPARATOR + "lib");
 				if (intlistDir.exists() && intlistDir.isDirectory()) {
 					File[] libs = intlistDir.listFiles(dirFilter);
 					for (File lib : libs) {
@@ -97,7 +97,7 @@ public class IntlistContainer implements IClasspathContainer {
 					}
 				}
 				//Check is ACScomponent directory exists
-				File compDir = new File(intlistDir.getAbsoluteFile() + "/ACScomponents");
+				File compDir = new File(intlistDir, "ACScomponents");
 				if (compDir.exists() && compDir.isDirectory()) {
 					File[] libs = intlistDir.listFiles(dirFilter);
 					for (File lib : libs) {
