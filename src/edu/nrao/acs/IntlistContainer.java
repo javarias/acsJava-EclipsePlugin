@@ -1,7 +1,13 @@
 package edu.nrao.acs;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -20,19 +26,20 @@ public class IntlistContainer implements IClasspathContainer {
 	private HashSet<String> ext;
 	private File dir;
 	private String desc;
+	private File orderFile;
 	
 	private FilenameFilter dirFilter = new FilenameFilter() {
 		
 		@Override
 		public boolean accept(File dir, String name) {
 			String[] nameSegs = name.split("[.]");
-			if (nameSegs.length != 2) {
-				return false;
-			}
-			if (nameSegs[0].endsWith("-src")) {
-				return false;
-			}
-			if (ext.contains(nameSegs[1].toLowerCase())) {
+//			if (nameSegs.length != 2) {
+//				return false;
+//			}
+//			if (nameSegs[0].endsWith("-src")) {
+//				return false;
+//			}
+			if (ext.contains(nameSegs[nameSegs.length - 1].toLowerCase())) {
 				return true;
 			}
 
@@ -48,28 +55,74 @@ public class IntlistContainer implements IClasspathContainer {
 		for (String ext: extArray)
 			this.ext.add(ext.toLowerCase());
 		
-		path = path.removeFirstSegments(1).removeFirstSegments(1);
-		File rootProj = project.getProject().getLocation().makeAbsolute().toFile();
-		if (path.segmentCount() == 1 && path.segment(0).equals(ROOT_DIR)){
-			dir = rootProj;
-			path = path.removeFirstSegments(1);
-		} else {
-			dir = new File(rootProj, path.toString());
-		}
+		path = path.removeFirstSegments(1).removeLastSegments(1);
+//		File rootProj = project.getProject().getLocation().makeAbsolute().toFile();
+//		if (path.segmentCount() == 1 && path.segment(0).equals(ROOT_DIR)){
+//			dir = rootProj;
+//			path = path.removeFirstSegments(1);
+//		} else {
+//			dir = new File(rootProj, path.toString());
+//		}
 		
-		desc = "/" + path + "Libraries";
+		dir = new File("/" + path.toString());
+		
+		orderFile = new File(dir.getAbsolutePath() + "/intlist.order");
+		desc = "INTLIST /" + path + " Libraries";
 	}
 
 	@Override
 	public IClasspathEntry[] getClasspathEntries() {
 		ArrayList<IClasspathEntry> entryList = new ArrayList<IClasspathEntry>();
-		File[] libs = dir.listFiles(dirFilter);
-		for (File lib: libs){
-			//The source are inside the same jars in ACS
-			entryList.add(JavaCore.newLibraryEntry(
-					new Path(lib.getAbsolutePath()),
-					new Path(lib.getAbsolutePath()), 
-					new Path("/")));
+		FileInputStream fstream;
+		DataInputStream in = null;
+		BufferedReader br;
+		try {
+			fstream = new FileInputStream(orderFile);
+			in = new DataInputStream(fstream);
+			br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			while ((strLine = br.readLine()) != null) {
+				//Check for directories declared in intlist.order 
+				File intlistDir = new File(dir.getAbsolutePath() + "/"
+						+ strLine + "/" + "lib");
+				if (intlistDir.exists() && intlistDir.isDirectory()) {
+					File[] libs = intlistDir.listFiles(dirFilter);
+					for (File lib : libs) {
+						// The source are inside the same jars in ACS
+						entryList
+								.add(JavaCore.newLibraryEntry(
+										new Path(lib.getAbsolutePath()),
+										new Path(lib.getAbsolutePath()),
+										new Path("/")));
+					}
+				}
+				//Check is ACScomponent directory exists
+				File compDir = new File(intlistDir.getAbsoluteFile() + "/ACScomponents");
+				if (compDir.exists() && compDir.isDirectory()) {
+					File[] libs = intlistDir.listFiles(dirFilter);
+					for (File lib : libs) {
+						// The source are inside the same jars in ACS
+						entryList
+								.add(JavaCore.newLibraryEntry(
+										new Path(lib.getAbsolutePath()),
+										new Path(lib.getAbsolutePath()),
+										new Path("/")));
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// The code should not reach this point
+			Logger.log(Logger.ERROR, e);
+		} catch (IOException e) {
+			Logger.log(Logger.ERROR, e);
+		}
+		finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException e) {
+				Logger.log(Logger.WARNING, e);
+			}
 		}
 		IClasspathEntry[] entryArray = new IClasspathEntry[entryList.size()];
 		return entryList.toArray(entryArray);
@@ -91,7 +144,13 @@ public class IntlistContainer implements IClasspathContainer {
 	}
 	
 	public boolean isValid() {
-		if (dir.exists() && dir.isDirectory())
+		if (dir.exists() && dir.isDirectory() && existOrderFile())
+			return true;
+		return false;
+	}
+	
+	private boolean existOrderFile() {
+		if (orderFile.exists() && !orderFile.isDirectory() && orderFile.canRead())
 			return true;
 		return false;
 	}
