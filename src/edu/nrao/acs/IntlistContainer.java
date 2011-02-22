@@ -99,7 +99,7 @@ public class IntlistContainer implements IClasspathContainer {
 				//Check is ACScomponent directory exists
 				File compDir = new File(intlistDir, "ACScomponents");
 				if (compDir.exists() && compDir.isDirectory()) {
-					File[] libs = intlistDir.listFiles(dirFilter);
+					File[] libs = compDir.listFiles(dirFilter);
 					for (File lib : libs) {
 						// The source are inside the same jars in ACS
 						entryList
