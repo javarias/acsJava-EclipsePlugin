@@ -34,5 +34,19 @@
             name="ACS INTLIST Directory">
       </classpathContainerPage>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="edu.nrao.acs.preference.AcsVersions"
+            id="edu.nrao.acs.preference.AcsVersions"
+            name="Installed ACS versions">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.nrao.acs.preference.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
