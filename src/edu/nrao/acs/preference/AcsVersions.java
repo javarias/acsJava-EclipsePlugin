@@ -42,7 +42,7 @@ public class AcsVersions
 	 */
 	@Override
 	public void createFieldEditors() {
-		addField(new PathEditor("test", "Test?", "description", getFieldEditorParent()));
+		addField(new SoftwareVersionTableEditor("test", "Test?", "description", getFieldEditorParent()));
 		
 		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
 				"&Directory preference:", getFieldEditorParent()));
