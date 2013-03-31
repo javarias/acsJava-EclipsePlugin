@@ -27,6 +27,11 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
 	private Button _dirBrowseButton;
 	private Text _nameText;
 
+	private String directoryPath;
+	private String extensions;
+	private String name;
+	private Button _okButton;
+	
 	/**
 	 * Create the dialog.
 	 * @param parentShell
@@ -42,6 +47,7 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
+//		setTitleImage(ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
 		setTitleImage(ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/wizban/addlibrary_wiz.png"));
 		Composite container = (Composite) super.createDialogArea(parent);
 
@@ -57,10 +63,11 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+		_okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
+		
 	}
 
 	/**
@@ -85,6 +92,7 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         _nameText.setLayoutData(gridData);
+        new Label(classpathNameGroup, SWT.NONE);
 	}
 	
 	private void createExtGroup(Composite parent) {
@@ -152,4 +160,30 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
         String homeDir =  System.getenv("HOME");
         return homeDir;//.substring(0, homeDir.lastIndexOf(IPath.SEPARATOR));
     }
+    
+    public String getDirectoryPath() {
+    	return directoryPath;
+    }
+    
+    public String getName() {
+    	return name;
+    }
+    
+    public String getExtensions() {
+    	return extensions;
+    }
+
+    private void saveInput() {
+    	directoryPath = _dirCombo.getText();
+    	name = _nameText.getText();
+    	extensions = _extText.getText();
+    }
+    
+	@Override
+	protected void okPressed() {
+		saveInput();
+		super.okPressed();
+	}
+    
+    
 }

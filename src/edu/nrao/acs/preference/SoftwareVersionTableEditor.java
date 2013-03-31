@@ -1,9 +1,12 @@
 package edu.nrao.acs.preference;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -11,6 +14,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.wb.swt.ResourceManager;
 
 /**
  * 
@@ -61,6 +65,11 @@ public class SoftwareVersionTableEditor extends FieldEditor {
         gd.grabExcessHorizontalSpace = true;
         table.setLayoutData(gd);
 
+        addButton = getAddButtonControl(parent);
+        gd = new GridData();
+        gd.verticalAlignment = GridData.BEGINNING;
+        addButton.setLayoutData(gd);
+        
 //        buttonBox = getButtonBoxControl(parent);
 //        gd = new GridData();
 //        gd.verticalAlignment = GridData.BEGINNING;
@@ -115,6 +124,7 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 			}
 			TableItem i = new TableItem (table, SWT.NONE);
 			i.setText(0, "ACS");
+			i.setImage(0, ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
 			i.setText(1, "/test/path");
 			
 			table.addDisposeListener(new DisposeListener() {
@@ -130,6 +140,33 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 			table.getColumn(1).pack();
 		}
 		return table;
+	}
+	
+	private Button getAddButtonControl(final Composite parent) {
+		if (addButton != null)
+			return addButton;
+		addButton = new Button(parent, SWT.PUSH|SWT.CENTER);
+		addButton.setText("Add ACS library");
+		addButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				AcsDirectoryStructureDialog dialog = new AcsDirectoryStructureDialog(parent.getShell());
+				dialog.create();
+				dialog.setTitle("ACS classpath selction");
+				if (dialog.open() == IDialogConstants.OK_ID) {
+					TableItem ti = new TableItem(table, SWT.NONE);
+					System.out.println(dialog.getName() + " -- "+ dialog.getDirectoryPath());
+					ti.setText(0, dialog.getName());
+					ti.setImage(0, ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
+					ti.setText(1, dialog.getDirectoryPath());
+					table.getColumn(0).pack();
+					table.getColumn(1).pack();
+				}
+			}
+			
+		});
+		return addButton;
 	}
 	
 
