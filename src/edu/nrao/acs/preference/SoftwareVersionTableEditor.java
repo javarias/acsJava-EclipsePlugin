@@ -2,12 +2,14 @@ package edu.nrao.acs.preference;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -15,6 +17,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.ResourceManager;
+
+import edu.nrao.acs.AcsJavaPluginActivator;
 
 /**
  * 
@@ -38,10 +42,13 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 	 */
 	private Table table;
 	
+	private String dirChooserLabelText;
+	
 	public SoftwareVersionTableEditor(String name, String labelText,
 			String dirChooserLabelText, Composite fieldEditorParent) {
 		init(name, labelText);
 		createControl(fieldEditorParent);
+		this.dirChooserLabelText = dirChooserLabelText;
 	}
 
 	@Override
@@ -56,6 +63,7 @@ public class SoftwareVersionTableEditor extends FieldEditor {
         Control control = getLabelControl(parent);
         GridData gd = new GridData();
         gd.horizontalSpan = numColumns;
+        gd.verticalSpan = 5;
         control.setLayoutData(gd);
 
         table = getTableControl(parent);
@@ -65,39 +73,61 @@ public class SoftwareVersionTableEditor extends FieldEditor {
         gd.grabExcessHorizontalSpace = true;
         table.setLayoutData(gd);
 
-        addButton = getAddButtonControl(parent);
+        Composite buttonsGroup = new Composite(parent, SWT.NONE);
+        buttonsGroup.setLayout( new GridLayout(1, true));
+        addButton = getAddButtonControl(buttonsGroup);
         gd = new GridData();
         gd.verticalAlignment = GridData.BEGINNING;
+        gd.horizontalAlignment = GridData.FILL;
         addButton.setLayoutData(gd);
         
-//        buttonBox = getButtonBoxControl(parent);
-//        gd = new GridData();
-//        gd.verticalAlignment = GridData.BEGINNING;
-//        buttonBox.setLayoutData(gd);
+        removeButton = getRemoveButtonControl(buttonsGroup);
+        removeButton.setLayoutData(gd);
 
 	}
-
+	
 	@Override
 	protected void doLoad() {
-		// TODO Auto-generated method stub
+		IPreferenceStore ps = AcsJavaPluginActivator.getDefault().getPreferenceStore();
+		String prefValue = ps.getString(this.getPreferenceName());
+		if (prefValue.equals(""))
+			return;
+		for (String duple: prefValue.split(":")){
+			String[] values = duple.substring(1, duple.length() - 1).split(",");
+			addItemToTable(values[0], values[1]);
+		}
 
 	}
 
 	@Override
 	protected void doLoadDefault() {
-		// TODO Auto-generated method stub
-
+		table.removeAll();
+		IPreferenceStore ps = AcsJavaPluginActivator.getDefault().getPreferenceStore();
+		String prefDefaultValue = ps.getDefaultString(this.getPreferenceName());
+		if (prefDefaultValue.equals(""))
+			return;
+		for (String duple: prefDefaultValue.split(":")){
+			String[] values = duple.substring(1, duple.length() - 1).split(",");
+			addItemToTable(values[0], values[1]);
+		}
+		
 	}
 
 	@Override
 	protected void doStore() {
-		// TODO Auto-generated method stub
-
+		String prefValue = new String("");
+		for (TableItem item: table.getItems()) {
+			String duple = "(" + item.getText(0) + "," + item.getText(1) + ")";
+			prefValue += duple + ":";
+		}
+		if (prefValue.endsWith(":"))
+			prefValue = prefValue.substring(0, prefValue.length() - 1);
+		AcsJavaPluginActivator.getDefault().getPreferenceStore().setValue(getPreferenceName(), prefValue);
 	}
 
 	@Override
 	public int getNumberOfControls() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -110,23 +140,20 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 	
 	private Table getTableControl(Composite parent) {
 		if (table == null) {
-			table = new Table(parent, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
+			table = new Table(parent, SWT.MULTI | SWT.BORDER | 
+					SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL | SWT.VIRTUAL);
 			table.setLinesVisible(true);
 			table.setHeaderVisible(true);
 			table.setFont(parent.getFont());
-			GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+			GridData data = new GridData(SWT.FILL, SWT.TOP, true, false);
 			data.heightHint = 500;
+			data.verticalSpan = 5;
 			table.setLayoutData(data);
 			String titles[] = {"Name", "Path"};
 			for (String t: titles) {
 				TableColumn c = new TableColumn(table, SWT.NONE);
 				c.setText(t);
 			}
-			TableItem i = new TableItem (table, SWT.NONE);
-			i.setText(0, "ACS");
-			i.setImage(0, ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
-			i.setText(1, "/test/path");
-			
 			table.addDisposeListener(new DisposeListener() {
 				
 				@Override
@@ -135,9 +162,6 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 					
 				}
 			});
-			
-			table.getColumn(0).pack();
-			table.getColumn(1).pack();
 		}
 		return table;
 	}
@@ -146,22 +170,16 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 		if (addButton != null)
 			return addButton;
 		addButton = new Button(parent, SWT.PUSH|SWT.CENTER);
-		addButton.setText("Add ACS library");
+		addButton.setText("Add library");
 		addButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				AcsDirectoryStructureDialog dialog = new AcsDirectoryStructureDialog(parent.getShell());
 				dialog.create();
-				dialog.setTitle("ACS classpath selction");
+				dialog.setTitle(dirChooserLabelText);
 				if (dialog.open() == IDialogConstants.OK_ID) {
-					TableItem ti = new TableItem(table, SWT.NONE);
-					System.out.println(dialog.getName() + " -- "+ dialog.getDirectoryPath());
-					ti.setText(0, dialog.getName());
-					ti.setImage(0, ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
-					ti.setText(1, dialog.getDirectoryPath());
-					table.getColumn(0).pack();
-					table.getColumn(1).pack();
+					addItemToTable(dialog.getName(), dialog.getDirectoryPath());
 				}
 			}
 			
@@ -169,5 +187,33 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 		return addButton;
 	}
 	
+	private Button getRemoveButtonControl(Composite parent) {
+		if (removeButton != null)
+			return removeButton;
+		removeButton = new Button(parent, SWT.PUSH|SWT.CENTER);
+		removeButton.setText("Remove selection");
+		removeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (table.getSelectionCount() > 0) {
+					table.remove(table.getSelectionIndices());
+					table.getColumn(0).pack();
+					table.getColumn(1).pack();
+				}
+			}
+			
+		});
+		return removeButton;
+	}
+	
+	private void addItemToTable(String name, String path) {
+		TableItem ti = new TableItem(table, SWT.NONE);
+		ti.setText(0, name);
+		ti.setImage(0, ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/obj16/library_obj.gif"));
+		ti.setText(1, path);
+		table.getColumn(0).pack();
+		table.getColumn(1).pack();
+	}
 
 }

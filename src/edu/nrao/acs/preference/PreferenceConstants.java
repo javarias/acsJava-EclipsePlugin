@@ -5,12 +5,10 @@ package edu.nrao.acs.preference;
  */
 public class PreferenceConstants {
 
-	public static final String P_PATH = "pathPreference";
+	public static final String ACS_LIBS = "ACS_LIBS";
 
-	public static final String P_BOOLEAN = "booleanPreference";
+	public static final String INTLIST_LIBS = "INTLIST_LIBS";
 
-	public static final String P_CHOICE = "choicePreference";
-
-	public static final String P_STRING = "stringPreference";
+	public static final String INTROOT_LIBS = "INTROOT_LIBS";
 	
 }

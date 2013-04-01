@@ -17,10 +17,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = AcsJavaPluginActivator.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_BOOLEAN, true);
-		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
-		store.setDefault(PreferenceConstants.P_STRING,
-				"Default value");
+		store.setDefault(PreferenceConstants.ACS_LIBS, "(ACS-current,/alma/ACS-current)");
+		store.setDefault(PreferenceConstants.INTLIST_LIBS, "");
+		store.setDefault(PreferenceConstants.INTLIST_LIBS, "");
 	}
 
 }
