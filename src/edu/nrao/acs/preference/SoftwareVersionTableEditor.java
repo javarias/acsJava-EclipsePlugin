@@ -61,7 +61,7 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 	@Override
 	protected void doFillIntoGrid(Composite parent, int numColumns) {
         Control control = getLabelControl(parent);
-        GridData gd = new GridData();
+        GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
         gd.horizontalSpan = numColumns;
         gd.verticalSpan = 5;
         control.setLayoutData(gd);
@@ -141,7 +141,7 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 	private Table getTableControl(Composite parent) {
 		if (table == null) {
 			table = new Table(parent, SWT.MULTI | SWT.BORDER | 
-					SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL | SWT.VIRTUAL);
+					SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
 			table.setLinesVisible(true);
 			table.setHeaderVisible(true);
 			table.setFont(parent.getFont());
@@ -149,9 +149,9 @@ public class SoftwareVersionTableEditor extends FieldEditor {
 			data.heightHint = 500;
 			data.verticalSpan = 5;
 			table.setLayoutData(data);
-			String titles[] = {"Name", "Path"};
+			String titles[] = {"Name     ", "Path"};
 			for (String t: titles) {
-				TableColumn c = new TableColumn(table, SWT.NONE);
+				TableColumn c = new TableColumn(table, SWT.LEFT);
 				c.setText(t);
 			}
 			table.addDisposeListener(new DisposeListener() {
