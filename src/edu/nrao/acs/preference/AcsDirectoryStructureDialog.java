@@ -30,7 +30,6 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
 	private String directoryPath;
 	private String extensions;
 	private String name;
-	private Button _okButton;
 	
 	/**
 	 * Create the dialog.
@@ -63,7 +62,7 @@ public class AcsDirectoryStructureDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		_okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
+		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
