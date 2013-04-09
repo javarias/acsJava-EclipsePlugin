@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -72,7 +73,7 @@ public class IntlistContainer implements IClasspathContainer {
 
 	@Override
 	public IClasspathEntry[] getClasspathEntries() {
-		ArrayList<IClasspathEntry> entryList = new ArrayList<IClasspathEntry>();
+		ArrayDeque<IClasspathEntry> entryList = new ArrayDeque<IClasspathEntry>();
 		FileInputStream fstream;
 		DataInputStream in = null;
 		BufferedReader br;
@@ -89,8 +90,7 @@ public class IntlistContainer implements IClasspathContainer {
 					File[] libs = intlistDir.listFiles(dirFilter);
 					for (File lib : libs) {
 						// The source are inside the same jars in ACS
-						entryList
-								.add(JavaCore.newLibraryEntry(
+						entryList.addFirst(JavaCore.newLibraryEntry(
 										new Path(lib.getAbsolutePath()),
 										new Path(lib.getAbsolutePath()),
 										new Path("/")));
@@ -102,8 +102,7 @@ public class IntlistContainer implements IClasspathContainer {
 					File[] libs = compDir.listFiles(dirFilter);
 					for (File lib : libs) {
 						// The source are inside the same jars in ACS
-						entryList
-								.add(JavaCore.newLibraryEntry(
+						entryList.add(JavaCore.newLibraryEntry(
 										new Path(lib.getAbsolutePath()),
 										new Path(lib.getAbsolutePath()),
 										new Path("/")));
