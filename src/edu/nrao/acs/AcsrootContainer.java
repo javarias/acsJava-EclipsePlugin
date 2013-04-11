@@ -12,6 +12,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import edu.nrao.acs.preference.PreferenceConstants;
+
 public class AcsrootContainer implements IClasspathContainer {
 
 	public final static Path ID = new Path("acs.ACSROOT_CONTAINER");
@@ -27,12 +29,6 @@ public class AcsrootContainer implements IClasspathContainer {
 		@Override
 		public boolean accept(File dir, String name) {
 			String[] nameSegs = name.split("[.]");
-			// if (nameSegs.length != 2) {
-			// return false;
-			// }
-			// if (nameSegs[0].endsWith("-src")) {
-			// return false;
-			// }
 			if (ext.contains(nameSegs[nameSegs.length - 1].toLowerCase())) {
 				return true;
 			}
@@ -50,17 +46,19 @@ public class AcsrootContainer implements IClasspathContainer {
 			this.ext.add(ext.toLowerCase());
 
 		path = path.removeFirstSegments(1).removeLastSegments(1);
-		// File rootProj =
-		// project.getProject().getLocation().makeAbsolute().toFile();
-		// if (path.segmentCount() == 1 && path.segment(0).equals(ROOT_DIR)){
-		// dir = rootProj;
-		// path = path.removeFirstSegments(1);
-		// } else {
-		// dir = new File(rootProj, path.toString());
-		// }
-		dir = new File(IPath.SEPARATOR + path.toString());
-
-		desc = "ACS Installation " + dir.getAbsolutePath() + " Libraries";
+		String prefValue = 
+				AcsJavaPluginActivator.getDefault().getPreferenceStore().getString(PreferenceConstants.ACS_LIBS);
+		for (String duple: prefValue.split(":")) {
+			String[] values = duple.substring(1, duple.length() - 1).split(",");
+			if (path.toString().equals(values[0])) {
+				dir = new File(values[1]);
+				break;
+			}
+		}
+		if (dir == null)
+			desc = "ACS Libs are not present in this filesystem -- " + path;
+		
+		desc = path + " (" + dir.getAbsolutePath() + ")";
 	}
 	
 	@Override
