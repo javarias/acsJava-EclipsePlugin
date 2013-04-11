@@ -63,7 +63,6 @@ public class SoftwareVersionTableEditor extends FieldEditor {
         Control control = getLabelControl(parent);
         GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
         gd.horizontalSpan = numColumns;
-        gd.verticalSpan = 5;
         control.setLayoutData(gd);
 
         table = getTableControl(parent);
