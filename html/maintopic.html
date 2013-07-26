@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>ACS Java Eclipse Plugin</title>
+</head>
+
+<body>
+<h1>Overview</h1>
+<p>The ACS Java Eclipse Plugin was designed to keep track, on you Eclipse Java project, the
+different set of libraries used during ACS Java module development (<b>ACSROOT</b>, <b>INTLIST</b> and <b>INTROOT</b>).</p>
+
+<p>This Plugin will read the interesting files (.jar and .zip) from the ACS know directory structures and put them as dependencies of
+your project. However this plugin does not take care of the import order of the Java Build Path, the the user must set this up as required.</p>
+
+<h1>Setting up the libraries</h1>
+Once this plugin is installed, a new preference item will show up in the preferences window.<br/>
+<center><img src="images/preference-list.png" alt="Preference window list showing ACS Java plugin installed"></center> <br>
+Clicking in the <i>Installed ACS versions</i> item will display the following panel: <br/>
+<center><img alt="ACS libraries setup panel" src="images/libs-list-setup.png"></center> <br/>
+Adding a library of any type is easy. You need to click in any <i>Add Library</i> 
+button to display a new wizard to help you to select a directory containing the ACS and/or ACS related binaries. <br/>
+<center><img alt="ACS directory selection" src="images/directory-selection-dialog.png"></center> <br/>
+The name of the directory selected will automatically set based on the last path segment. This is user modifiable, though. </br>
+<center><img alt="Fully setup ACS libs example" src="images/fully-setup-ACSlibs.png"></center>
+<h1>Setting up ACS libraries in your Java project</h1>
+<p>Once the libraries has been setup properly in the Eclipse preferences. Then it is possible to setup the libraries used
+to build a Java project based upon ACS.</p>
+<p>In this example an Java Project called <i>DC</i> will be created from existing sources. Originally this project is based on ACS and it 
+require a ACSROOT and a INTLIST to build correctly.</p>
+<center><img alt="New Java project created" src="images/new-java-project.png"></center>
+<p>Adding ACS libraries is straightforward since it is integrated with Eclipse JDT framework. To add a new library dependency to the project 
+do the following: <b>get properties for the project</b>, in the properties window click in the <b>Java Build Path</b> list item, then click
+in the <b>Libraries</b> tab and finally click in the <b>Add Library...</b> button. The following Dialog will show up:</p>
+<center><img alt="Add library JDT dialog" src="images/add-lib-dialog.png"></center> 
+<p>Additionally to the regular options a new set of three options is presented:
+<ul>
+<li>ACS Installation Directory</li>
+<li>ACS INSTLIST Directory</li>
+<li>ACS INTROOT Directory</li> 
+</ul>
+For this project it is necessary to add an <i>ACS Installation Directory</i> and an <i>ACS INTLIST Directory</i>.
+Selecting ACS Installation Directory and then next, will show up the previously setup ACS installation list.<br/>
+<center><img alt="Adding an ACS installation directory" src="images/add-acslib-dialog.png"></center>
+<p>Selecting the ACS installation and then finish will add to project Libraries the selected ACS installation directory. </br>
+<center><img alt="ACS added" src="images/acs-added.png"></center>
+<p>The same procedure must be followed for any INTLIST and INTROOT that need to be added to the project. </p>
+<p>Remember to set the right order for these libraries, first the INTROOT, then the INTLIST, the the ACSROOT and at the end the JVM.
+The user can add more jars, and other libraries. the order how to setup them is responsibility of the user.<p>
+<center><img alt="Libs put in order" src="images/libs-in-order.png"></center>
+<p>At the end the project should build ok.</p>
+<center><img alt="Project with all the dependencies" src="images/project-completed.png"></center>
+</body>
+</html>
