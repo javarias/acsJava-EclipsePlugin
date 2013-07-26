@@ -12,6 +12,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import edu.nrao.acs.preference.PreferenceConstants;
+
 public class IntrootContainer implements IClasspathContainer {
 	public final static Path ID = new Path("acs.INTROOT_CONTAINER");
 	public final static String ROOT_DIR = "-";
@@ -50,9 +52,20 @@ public class IntrootContainer implements IClasspathContainer {
 		
 		path = path.removeFirstSegments(1).removeLastSegments(1);
 		
-		dir = new File(IPath.SEPARATOR + path.toString());
+		String prefValue = 
+				AcsJavaPluginActivator.getDefault().getPreferenceStore().getString(PreferenceConstants.INTROOT_LIBS);
+		for (String duple: prefValue.split(":")) {
+			String[] values = duple.substring(1, duple.length() - 1).split(",");
+			if (path.toString().equals(values[0])) {
+				dir = new File(values[1]);
+				break;
+			}
+		}
 		
-		desc = "INTROOT " + dir.getAbsolutePath() + " Libraries";
+		if (dir == null)
+			desc = "INTROOT Libs are not present in this filesystem -- " + path;
+		else 
+			desc = "INTROOT " + dir.getAbsolutePath() + " Libraries";
 	}
 	
 	@Override
@@ -99,7 +112,7 @@ public class IntrootContainer implements IClasspathContainer {
 	}
 	
 	public boolean isValid() {
-		if (dir.exists() && dir.isDirectory())
+		if (dir != null && dir.exists() && dir.isDirectory())
 			return true;
 		return false;
 	}

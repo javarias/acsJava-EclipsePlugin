@@ -57,8 +57,8 @@ public class AcsrootContainer implements IClasspathContainer {
 		}
 		if (dir == null)
 			desc = "ACS Libs are not present in this filesystem -- " + path;
-		
-		desc = path + " (" + dir.getAbsolutePath() + ")";
+		else 
+			desc = path + " (" + dir.getAbsolutePath() + ")";
 	}
 	
 	@Override
@@ -126,7 +126,7 @@ public class AcsrootContainer implements IClasspathContainer {
 	}
 	
 	public boolean isValid() {
-		if (dir.exists() && dir.isDirectory())
+		if (dir != null && dir.exists() && dir.isDirectory())
 			return true;
 		return false;
 	}

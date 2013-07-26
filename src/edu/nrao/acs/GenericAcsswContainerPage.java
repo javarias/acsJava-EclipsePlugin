@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.ResourceManager;
 
-public abstract class GenecricAcsswContainerPage extends WizardPage implements
+public abstract class GenericAcsswContainerPage extends WizardPage implements
 		IClasspathContainerPage, IClasspathContainerPageExtension {
 
 	private final static String DEFAULT_EXTS = "jar,zip";
@@ -30,7 +30,7 @@ public abstract class GenecricAcsswContainerPage extends WizardPage implements
     protected Text _extText;
     protected Table table;
 	
-	public GenecricAcsswContainerPage() {
+	public GenericAcsswContainerPage() {
 		super("ACS Installation Wizard","ACS Installation", null );
 		setDescription("Select ACS installation directory");
 		setPageComplete(true);

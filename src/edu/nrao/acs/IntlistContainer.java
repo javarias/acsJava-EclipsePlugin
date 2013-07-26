@@ -18,6 +18,8 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import edu.nrao.acs.preference.PreferenceConstants;
+
 public class IntlistContainer implements IClasspathContainer {
 	public final static Path ID = new Path("acs.INTLIST_CONTAINER");
 	public final static String ROOT_DIR = "-";
@@ -56,18 +58,22 @@ public class IntlistContainer implements IClasspathContainer {
 			this.ext.add(ext.toLowerCase());
 		
 		path = path.removeFirstSegments(1).removeLastSegments(1);
-//		File rootProj = project.getProject().getLocation().makeAbsolute().toFile();
-//		if (path.segmentCount() == 1 && path.segment(0).equals(ROOT_DIR)){
-//			dir = rootProj;
-//			path = path.removeFirstSegments(1);
-//		} else {
-//			dir = new File(rootProj, path.toString());
-//		}
+		String prefValue = 
+				AcsJavaPluginActivator.getDefault().getPreferenceStore().getString(PreferenceConstants.INTLIST_LIBS);
+		for (String duple: prefValue.split(":")) {
+			String[] values = duple.substring(1, duple.length() - 1).split(",");
+			if (path.toString().equals(values[0])) {
+				dir = new File(values[1]);
+				break;
+			}
+		}
 		
-		dir = new File(IPath.SEPARATOR + path.toString());
-		
-		orderFile = new File(dir, "intlist.order");
-		desc = "INTLIST " + dir.getAbsolutePath() + " Libraries";
+		if (dir == null)
+			desc = "INTROOT Libs are not present in this filesystem -- " + path;
+		else {
+			orderFile = new File(dir, "intlist.order");
+			desc = "INTLIST " + dir.getAbsolutePath() + " Libraries";
+		}
 	}
 
 	@Override
@@ -142,7 +148,8 @@ public class IntlistContainer implements IClasspathContainer {
 	}
 	
 	public boolean isValid() {
-		if (dir.exists() && dir.isDirectory() && existOrderFile())
+		if (dir != null && orderFile != null && 
+				dir.exists() && dir.isDirectory() && existOrderFile())
 			return true;
 		return false;
 	}

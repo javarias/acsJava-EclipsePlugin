@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.Status;
  * @author Aaron J Tarter
  */
 public class Logger {
-    public final static String PLUGIN_ID = "cpcontainer.example";
+    public final static String PLUGIN_ID = "ACSJavaEclipsePlugin";
     // logging severities
     public static final int OK = IStatus.OK;
     public static final int ERROR = IStatus.ERROR;

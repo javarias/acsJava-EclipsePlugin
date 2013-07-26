@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Table;
 
 import edu.nrao.acs.preference.PreferenceConstants;
 
-public class AcsrootContainerPage extends GenecricAcsswContainerPage {
+public class AcsrootContainerPage extends GenericAcsswContainerPage {
 
 	@Override
 	public void populateSwVersionsTable(Table table) {
