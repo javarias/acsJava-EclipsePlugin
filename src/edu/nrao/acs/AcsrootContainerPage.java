@@ -10,6 +10,10 @@ import edu.nrao.acs.preference.PreferenceConstants;
 
 public class AcsrootContainerPage extends GenericAcsswContainerPage {
 
+	public AcsrootContainerPage() {
+		super("ACS Installation Wizard","ACS Installation", "Select ACS installation directory");
+	}
+	
 	@Override
 	public void populateSwVersionsTable(Table table) {
 		IPreferenceStore ps = AcsJavaPluginActivator.getDefault().getPreferenceStore();

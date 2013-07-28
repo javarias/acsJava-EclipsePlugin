@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.wizards.IClasspathContainerPage;
 import org.eclipse.jdt.ui.wizards.IClasspathContainerPageExtension;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -30,11 +31,13 @@ public abstract class GenericAcsswContainerPage extends WizardPage implements
     protected Text _extText;
     protected Table table;
 	
-	public GenericAcsswContainerPage() {
-		super("ACS Installation Wizard","ACS Installation", null );
-		setDescription("Select ACS installation directory");
-		setPageComplete(true);
-	}
+    public GenericAcsswContainerPage(String pageName, String title, String description) {
+     	super(pageName, title,
+     			ImageDescriptor.createFromImage(
+    					ResourceManager.getPluginImage("org.eclipse.jdt.ui", "/icons/full/wizban/addlibrary_wiz.png")));
+      	setDescription(description);
+      	setPageComplete(true);
+    }
 
 	@Override
 	public void createControl(Composite parent) {

@@ -10,6 +10,10 @@ import edu.nrao.acs.preference.PreferenceConstants;
 
 public class IntrootContainerPage extends GenericAcsswContainerPage {
 
+	public IntrootContainerPage() {
+		super("INTROOT Wizard","INTROOT", "Select an INTROOT directory");
+	}
+	
 	@Override
 	public void populateSwVersionsTable(Table table) {
 		IPreferenceStore ps = AcsJavaPluginActivator.getDefault().getPreferenceStore();

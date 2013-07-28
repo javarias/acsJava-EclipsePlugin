@@ -10,6 +10,9 @@ import edu.nrao.acs.preference.PreferenceConstants;
 
 public class IntlistContainerPage extends GenericAcsswContainerPage {
 
+	public IntlistContainerPage() {
+		super("Intlist Wizard","INTLIST", "Select an INTLILST directory");
+	}
 
 	@Override
 	public void populateSwVersionsTable(Table table) {
