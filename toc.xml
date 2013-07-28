@@ -2,8 +2,6 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="ACS Java Eclipse Plugin">
-	<topic label="Main Topic"  href="html/maintopic.html"> 
-		<topic label="Sub Topic" href="html/subtopic.html"/> 
+	<topic label="ACS Java Eclipse plugin User&apos;s manual"  href="html/maintopic.html"> 
 	</topic>
-	<topic label="Main Topic 2"/>
 </toc>
