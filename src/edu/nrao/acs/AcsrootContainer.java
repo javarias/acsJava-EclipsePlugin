@@ -5,6 +5,8 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.JColorChooser;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -104,6 +106,15 @@ public class AcsrootContainer implements IClasspathContainer {
 				entryList.add(JavaCore.newLibraryEntry(
 						new Path(lib.getAbsolutePath()),
 						new Path(lib.getAbsolutePath()), new Path("/")));
+			}
+		}
+		// Check Jacorb endorsed jars
+		File jacorbEndorsedDir = new File(jacorbDir, "endorsed");
+		if (jacorbEndorsedDir.exists() && jacorbEndorsedDir.isDirectory()) {
+			File[] libs = jacorbEndorsedDir.listFiles(dirFilter);
+			for (File lib : libs) {
+				entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()), new Path(lib.getAbsolutePath()),
+						new Path("/")));
 			}
 		}
 		IClasspathEntry[] entryArray = new IClasspathEntry[entryList.size()];
