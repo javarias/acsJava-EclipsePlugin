@@ -55,6 +55,8 @@ public class IntrootContainer implements IClasspathContainer {
 		String prefValue = 
 				AcsJavaPluginActivator.getDefault().getPreferenceStore().getString(PreferenceConstants.INTROOT_LIBS);
 		for (String duple: prefValue.split(":")) {
+			if (duple.length() < 3)
+				continue;
 			String[] values = duple.substring(1, duple.length() - 1).split(",");
 			if (path.toString().equals(values[0])) {
 				dir = new File(values[1]);
