@@ -5,8 +5,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.JColorChooser;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -77,25 +75,39 @@ public class AcsrootContainer implements IClasspathContainer {
 			}
 		}
 		// Check is ACScomponent directory exists
-		File compDir = new File(acsrootDir, "ACScomponents");
-		if (compDir.exists() && compDir.isDirectory()) {
-			File[] libs = compDir.listFiles(dirFilter);
-			for (File lib : libs) {
-				// The source are inside the same jars in ACS
-				entryList.add(JavaCore.newLibraryEntry(
-						new Path(lib.getAbsolutePath()),
-						new Path(lib.getAbsolutePath()), new Path("/")));
+		{
+			File compDir = new File(acsrootDir, "ACScomponents");
+			if (compDir.exists() && compDir.isDirectory()) {
+				File[] libs = compDir.listFiles(dirFilter);
+				for (File lib : libs) {
+					// The source are inside the same jars in ACS
+					entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()),
+							new Path(lib.getAbsolutePath()), new Path("/")));
+				}
 			}
 		}
 		// Check endorsed directory
-		File endorsedDir = new File(acsrootDir, "endorsed");
-		if (endorsedDir.exists() && endorsedDir.isDirectory()) {
-			File[] libs = endorsedDir.listFiles(dirFilter);
-			for (File lib : libs) {
-				// The source are inside the same jars in ACS
-				entryList.add(JavaCore.newLibraryEntry(
-						new Path(lib.getAbsolutePath()),
-						new Path(lib.getAbsolutePath()), new Path("/")));
+		{
+			File endorsedDir = new File(acsrootDir, "endorsed");
+			if (endorsedDir.exists() && endorsedDir.isDirectory()) {
+				File[] libs = endorsedDir.listFiles(dirFilter);
+				for (File lib : libs) {
+					// The source are inside the same jars in ACS
+					entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()),
+							new Path(lib.getAbsolutePath()), new Path("/")));
+				}
+			}
+		}
+		// Check JavaDependencies directory
+		{
+			File javaDepDir = new File(new File(dir, "JavaDependencies"), "lib");
+			if (javaDepDir.exists() && javaDepDir.isDirectory()) {
+				File[] libs = javaDepDir.listFiles(dirFilter);
+				for (File lib : libs) {
+					// The source are inside the same jars in ACS
+					entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()),
+							new Path(lib.getAbsolutePath()), new Path("/")));
+				}
 			}
 		}
 		//Check Jacorb jars
@@ -109,12 +121,14 @@ public class AcsrootContainer implements IClasspathContainer {
 			}
 		}
 		// Check Jacorb endorsed jars
-		File jacorbEndorsedDir = new File(jacorbDir, "endorsed");
-		if (jacorbEndorsedDir.exists() && jacorbEndorsedDir.isDirectory()) {
-			File[] libs = jacorbEndorsedDir.listFiles(dirFilter);
-			for (File lib : libs) {
-				entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()), new Path(lib.getAbsolutePath()),
-						new Path("/")));
+		{
+			File jacorbEndorsedDir = new File(jacorbDir, "endorsed");
+			if (jacorbEndorsedDir.exists() && jacorbEndorsedDir.isDirectory()) {
+				File[] libs = jacorbEndorsedDir.listFiles(dirFilter);
+				for (File lib : libs) {
+					entryList.add(JavaCore.newLibraryEntry(new Path(lib.getAbsolutePath()),
+							new Path(lib.getAbsolutePath()), new Path("/")));
+				}
 			}
 		}
 		IClasspathEntry[] entryArray = new IClasspathEntry[entryList.size()];
