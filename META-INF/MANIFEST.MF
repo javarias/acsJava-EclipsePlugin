@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ACS Java Plugin
 Bundle-SymbolicName: ACSJavaEclipsePlugin;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.2
 Bundle-Vendor: ACS Community
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",
  org.eclipse.core.runtime;bundle-version="3.5.0",
@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",
  org.eclipse.jdt.ui;bundle-version="3.5.0",
  org.eclipse.jface;bundle-version="3.5.0",
  org.eclipse.help;bundle-version="3.5.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Activator: edu.nrao.acs.AcsJavaPluginActivator
 Export-Package: edu.nrao.acs;
   uses:="org.eclipse.jface.wizard,
